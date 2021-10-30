@@ -8,13 +8,13 @@ namespace Model
         public static GameData I { get; private set; }
 
         [SerializeField] private SettingsData _data;
+        [SerializeField] private int _chanceToSpawnGold;
 
         public SettingsData Data
         {
             get => _data;
             set => _data = value;
         }
-
 
         private void Awake()
         {
@@ -28,7 +28,13 @@ namespace Model
                 Destroy(gameObject);
             }
         }
+        
+        public void GenerateGold()
+        {
+            
+        }
     }
+    
 
     [Serializable]
     public struct SettingsData
