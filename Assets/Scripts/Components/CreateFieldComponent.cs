@@ -1,6 +1,8 @@
 ﻿using Model;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 namespace Components
 {
@@ -9,10 +11,39 @@ namespace Components
         [SerializeField] private Transform _container;
         [SerializeField] private GameObject _fieldItem;
         [SerializeField] [Range(0.1f, 0.4f)] private float _distanceBetweenFieldItems;
+        [SerializeField] [Range(1, 100)] private int _goldSpawnChance;
+
 
         private void Start()
         {
+            CreateGold();
             CreateField();
+            FillPlayerData();
+            SceneManager.LoadScene("Hud", LoadSceneMode.Additive);
+        }
+
+        private void FillPlayerData()
+        {
+            GameData.I.PlayerData.CurrentGoldCollected = 0;
+            GameData.I.PlayerData.CurrentShovelAmount = GameData.I.Data.ShovelAmount;
+        }
+
+        private void CreateGold()
+        {
+            var fieldSize = GameData.I.Data.FieldSize;
+            var maxDepth = GameData.I.Data.MaxDepth;
+            var goldMap = new bool[fieldSize, fieldSize, maxDepth];
+
+            for (var i = 0; i < fieldSize; i++)
+            for (var j = 0; j < fieldSize; j++)
+            for (var k = 0; k < maxDepth; k++)
+            {
+                var randomNum = Random.Range(1, 100);
+                if (randomNum < _goldSpawnChance)
+                    goldMap[i, j, k] = true;
+            }
+
+            GameData.I.IsCellContainGold = goldMap;
         }
 
         private void CreateField()
@@ -49,6 +80,9 @@ namespace Components
 
                     var instance = Instantiate(_fieldItem, newItemPosition, quaternion.identity, _container);
                     instance.SetActive(true);
+                    var instanceParams = instance.GetComponent<DigComponent>();
+                    instanceParams.X = j;
+                    instanceParams.Y = i;
                 }
             }
         }
