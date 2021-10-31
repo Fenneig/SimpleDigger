@@ -1,5 +1,4 @@
-﻿using System;
-using Model;
+﻿using Model;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,7 +32,6 @@ namespace HUD.Widgets
         private void OnDestroy()
         {
             GameData.I.PlayerData.OnChanged -= OnChanged;
-            
         }
     }
 }

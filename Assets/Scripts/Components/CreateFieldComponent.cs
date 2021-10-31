@@ -20,6 +20,7 @@ namespace Components
             CreateField();
             FillPlayerData();
             SceneManager.LoadScene("Hud", LoadSceneMode.Additive);
+            GameData.I.PlayerData.IsGameRunning = true;
         }
 
         private void FillPlayerData()

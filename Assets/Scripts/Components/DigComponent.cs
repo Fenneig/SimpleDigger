@@ -21,8 +21,8 @@ namespace Components
 
         public void Dig()
         {
-            if (GameData.I.PlayerData.CurrentShovelAmount <= 0) return;
-
+            if (!GameData.I.PlayerData.IsGameRunning) return;
+            
             if (IsCellContainGold())
             {
                 GameData.I.PlayerData.CurrentGoldCollected++;
@@ -37,6 +37,20 @@ namespace Components
             ReColorCell();
         }
 
+        private void EndGameCheck()
+        {
+            if (GameData.I.PlayerData.CurrentGoldCollected == GameData.I.Data.GoldToWin)
+            {
+                GameData.I.PlayerData.IsWin = true;
+                GameData.I.PlayerData.IsGameRunning = false;
+            }
+            if (GameData.I.PlayerData.CurrentShovelAmount == 0)
+            {
+                GameData.I.PlayerData.IsWin = false;
+                GameData.I.PlayerData.IsGameRunning = false;
+            }
+        }
+
         private void ReColorCell()
         {
             if (IsCellContainGold())
@@ -49,6 +63,8 @@ namespace Components
                 var tempColor = CellColorUtils.DefaultColor;
                 _sprite.color = new Color(tempColor.r, tempColor.g, tempColor.b, colorAlpha);
             }
+            EndGameCheck();
+
         }
 
         private bool IsCellContainGold()

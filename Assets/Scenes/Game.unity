@@ -365,7 +365,7 @@ MonoBehaviour:
   _container: {fileID: 105439359}
   _fieldItem: {fileID: 1246033936}
   _distanceBetweenFieldItems: 0.4
-  _goldSpawnChance: 25
+  _goldSpawnChance: 15
 --- !u!1 &956016162
 GameObject:
   m_ObjectHideFlags: 0
